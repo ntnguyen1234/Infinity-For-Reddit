@@ -61,8 +61,7 @@ import ml.docilealligator.infinityforreddit.utils.Utils;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class EditCommentActivity extends BaseActivity implements UploadImageEnabledActivity,
-        GiphyDialogFragment.GifSelectionListener {
+public class EditCommentActivity extends BaseActivity implements UploadImageEnabledActivity {
 
     public static final String EXTRA_CONTENT = "EC";
     public static final String EXTRA_FULLNAME = "EF";
@@ -173,10 +172,10 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
                 fragment.show(getSupportFragmentManager(), fragment.getTag());
             }
 
-            @Override
-            public void onSelectGiphyGif() {
-                GiphyDialogFragment.Companion.newInstance().show(getSupportFragmentManager(), "giphy_dialog");
-            }
+            // @Override
+            // public void onSelectGiphyGif() {
+            //     GiphyDialogFragment.Companion.newInstance().show(getSupportFragmentManager(), "giphy_dialog");
+            // }
         });
 
         binding.markdownBottomBarRecyclerViewEditCommentActivity.setLayoutManager(new LinearLayoutManagerBugFixed(this,
@@ -422,26 +421,26 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
 
     }
 
-    @Override
-    public void onGifSelected(@NonNull Media media, @Nullable String s, @NonNull GPHContentType gphContentType) {
-        this.giphyGif = new GiphyGif(media.getId(), true);
+    // @Override
+    // public void onGifSelected(@NonNull Media media, @Nullable String s, @NonNull GPHContentType gphContentType) {
+    //     this.giphyGif = new GiphyGif(media.getId(), true);
 
-        int start = Math.max(binding.commentEditTextEditCommentActivity.getSelectionStart(), 0);
-        int end = Math.max(binding.commentEditTextEditCommentActivity.getSelectionEnd(), 0);
-        int realStart = Math.min(start, end);
-        if (realStart > 0 && binding.commentEditTextEditCommentActivity.getText().toString().charAt(realStart - 1) != '\n') {
-            binding.commentEditTextEditCommentActivity.getText().replace(realStart, Math.max(start, end),
-                    "\n![gif](" + giphyGif.id + ")\n",
-                    0, "\n![gif]()\n".length() + giphyGif.id.length());
-        } else {
-            binding.commentEditTextEditCommentActivity.getText().replace(realStart, Math.max(start, end),
-                    "![gif](" + giphyGif.id + ")\n",
-                    0, "![gif]()\n".length() + giphyGif.id.length());
-        }
-    }
+    //     int start = Math.max(binding.commentEditTextEditCommentActivity.getSelectionStart(), 0);
+    //     int end = Math.max(binding.commentEditTextEditCommentActivity.getSelectionEnd(), 0);
+    //     int realStart = Math.min(start, end);
+    //     if (realStart > 0 && binding.commentEditTextEditCommentActivity.getText().toString().charAt(realStart - 1) != '\n') {
+    //         binding.commentEditTextEditCommentActivity.getText().replace(realStart, Math.max(start, end),
+    //                 "\n![gif](" + giphyGif.id + ")\n",
+    //                 0, "\n![gif]()\n".length() + giphyGif.id.length());
+    //     } else {
+    //         binding.commentEditTextEditCommentActivity.getText().replace(realStart, Math.max(start, end),
+    //                 "![gif](" + giphyGif.id + ")\n",
+    //                 0, "![gif]()\n".length() + giphyGif.id.length());
+    //     }
+    // }
 
-    @Override
-    public void onDismissed(@NonNull GPHContentType gphContentType) {
+    // @Override
+    // public void onDismissed(@NonNull GPHContentType gphContentType) {
 
-    }
+    // }
 }

@@ -83,7 +83,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
 public class CommentActivity extends BaseActivity implements UploadImageEnabledActivity,
-        AccountChooserBottomSheetFragment.AccountChooserListener, GiphyDialogFragment.GifSelectionListener {
+        AccountChooserBottomSheetFragment.AccountChooserListener {
 
     public static final String EXTRA_COMMENT_PARENT_TITLE_KEY = "ECPTK";
     public static final String EXTRA_COMMENT_PARENT_BODY_KEY = "ECPBK";
@@ -625,26 +625,26 @@ public class CommentActivity extends BaseActivity implements UploadImageEnabledA
 
     }
 
-    @Override
-    public void onGifSelected(@NonNull Media media, @Nullable String s, @NonNull GPHContentType gphContentType) {
-        this.giphyGif = new GiphyGif(media.getId(), true);
+    // @Override
+    // public void onGifSelected(@NonNull Media media, @Nullable String s, @NonNull GPHContentType gphContentType) {
+    //     this.giphyGif = new GiphyGif(media.getId(), true);
 
-        int start = Math.max(binding.commentCommentEditText.getSelectionStart(), 0);
-        int end = Math.max(binding.commentCommentEditText.getSelectionEnd(), 0);
-        int realStart = Math.min(start, end);
-        if (realStart > 0 && binding.commentCommentEditText.getText().toString().charAt(realStart - 1) != '\n') {
-            binding.commentCommentEditText.getText().replace(realStart, Math.max(start, end),
-                    "\n![gif](" + giphyGif.id + ")\n",
-                    0, "\n![gif]()\n".length() + giphyGif.id.length());
-        } else {
-            binding.commentCommentEditText.getText().replace(realStart, Math.max(start, end),
-                    "![gif](" + giphyGif.id + ")\n",
-                    0, "![gif]()\n".length() + giphyGif.id.length());
-        }
-    }
+    //     int start = Math.max(binding.commentCommentEditText.getSelectionStart(), 0);
+    //     int end = Math.max(binding.commentCommentEditText.getSelectionEnd(), 0);
+    //     int realStart = Math.min(start, end);
+    //     if (realStart > 0 && binding.commentCommentEditText.getText().toString().charAt(realStart - 1) != '\n') {
+    //         binding.commentCommentEditText.getText().replace(realStart, Math.max(start, end),
+    //                 "\n![gif](" + giphyGif.id + ")\n",
+    //                 0, "\n![gif]()\n".length() + giphyGif.id.length());
+    //     } else {
+    //         binding.commentCommentEditText.getText().replace(realStart, Math.max(start, end),
+    //                 "![gif](" + giphyGif.id + ")\n",
+    //                 0, "![gif]()\n".length() + giphyGif.id.length());
+    //     }
+    // }
 
-    @Override
-    public void onDismissed(@NonNull GPHContentType gphContentType) {
+    // @Override
+    // public void onDismissed(@NonNull GPHContentType gphContentType) {
 
-    }
+    // }
 }
