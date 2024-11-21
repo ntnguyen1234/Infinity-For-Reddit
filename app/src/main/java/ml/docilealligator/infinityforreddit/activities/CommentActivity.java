@@ -57,7 +57,7 @@ import ml.docilealligator.infinityforreddit.account.Account;
 import ml.docilealligator.infinityforreddit.adapters.MarkdownBottomBarRecyclerViewAdapter;
 import ml.docilealligator.infinityforreddit.bottomsheetfragments.AccountChooserBottomSheetFragment;
 import ml.docilealligator.infinityforreddit.bottomsheetfragments.CopyTextBottomSheetFragment;
-import ml.docilealligator.infinityforreddit.bottomsheetfragments.GiphyGifInfoBottomSheetFragment;
+// import ml.docilealligator.infinityforreddit.bottomsheetfragments.GiphyGifInfoBottomSheetFragment;
 import ml.docilealligator.infinityforreddit.bottomsheetfragments.UploadedImagesBottomSheetFragment;
 import ml.docilealligator.infinityforreddit.comment.Comment;
 import ml.docilealligator.infinityforreddit.comment.SendComment;
@@ -73,7 +73,7 @@ import ml.docilealligator.infinityforreddit.markdown.ImageAndGifEntry;
 import ml.docilealligator.infinityforreddit.markdown.ImageAndGifPlugin;
 import ml.docilealligator.infinityforreddit.markdown.MarkdownUtils;
 import ml.docilealligator.infinityforreddit.network.AnyAccountAccessTokenAuthenticator;
-import ml.docilealligator.infinityforreddit.thing.GiphyGif;
+// import ml.docilealligator.infinityforreddit.thing.GiphyGif;
 import ml.docilealligator.infinityforreddit.thing.UploadedImage;
 import ml.docilealligator.infinityforreddit.utils.APIUtils;
 import ml.docilealligator.infinityforreddit.utils.SharedPreferencesUtils;
@@ -312,11 +312,11 @@ public class CommentActivity extends BaseActivity implements UploadImageEnabledA
                         fragment.show(getSupportFragmentManager(), fragment.getTag());
                     }
 
-                    @Override
-                    public void onSelectGiphyGif() {
-                        GiphyGifInfoBottomSheetFragment fragment = new GiphyGifInfoBottomSheetFragment();
-                        fragment.show(getSupportFragmentManager(), fragment.getTag());
-                    }
+                    // @Override
+                    // public void onSelectGiphyGif() {
+                    //     GiphyGifInfoBottomSheetFragment fragment = new GiphyGifInfoBottomSheetFragment();
+                    //     fragment.show(getSupportFragmentManager(), fragment.getTag());
+                    // }
                 });
 
         binding.commentMarkdownBottomBarRecyclerView.setLayoutManager(new LinearLayoutManagerBugFixed(this,
