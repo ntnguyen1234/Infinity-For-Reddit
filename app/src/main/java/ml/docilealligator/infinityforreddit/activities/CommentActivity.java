@@ -133,7 +133,7 @@ public class CommentActivity extends BaseActivity implements UploadImageEnabledA
     private boolean isReplying;
     private Uri capturedImageUri;
     private ArrayList<UploadedImage> uploadedImages = new ArrayList<>();
-    private GiphyGif giphyGif;
+    // private GiphyGif giphyGif;
     private Menu mMenu;
 
     /**

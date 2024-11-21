@@ -100,7 +100,7 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
     private boolean isSubmitting = false;
     private Uri capturedImageUri;
     private ArrayList<UploadedImage> uploadedImages = new ArrayList<>();
-    private GiphyGif giphyGif;
+    // private GiphyGif giphyGif;
     private ActivityEditCommentBinding binding;
 
     @Override
