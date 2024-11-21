@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.giphy.sdk.ui.views.GiphyDialogFragment;
+// import com.giphy.sdk.ui.views.GiphyDialogFragment;
 
 import ml.docilealligator.infinityforreddit.activities.BaseActivity;
 import ml.docilealligator.infinityforreddit.customviews.LandscapeExpandedRoundedBottomSheetDialogFragment;
