@@ -254,7 +254,7 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
 
             Map<String, String> params = new HashMap<>();
             params.put(APIUtils.THING_ID_KEY, mFullName);
-            if (!uploadedImages.isEmpty() || giphyGif != null) {
+            if (!uploadedImages.isEmpty() || false) {
                 try {
                     params.put(APIUtils.RICHTEXT_JSON_KEY, new RichTextJSONConverter().constructRichTextJSON(this, content, uploadedImages, giphyGif));
                     params.put(APIUtils.TEXT_KEY, "");
