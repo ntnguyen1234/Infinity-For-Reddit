@@ -150,7 +150,7 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
 
         if (savedInstanceState != null) {
             uploadedImages = savedInstanceState.getParcelableArrayList(UPLOADED_IMAGES_STATE);
-            giphyGif = savedInstanceState.getParcelable(GIPHY_GIF_STATE);
+            // giphyGif = savedInstanceState.getParcelable(GIPHY_GIF_STATE);
         }
 
         MarkdownBottomBarRecyclerViewAdapter adapter = new MarkdownBottomBarRecyclerViewAdapter(
