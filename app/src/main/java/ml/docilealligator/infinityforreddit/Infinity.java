@@ -152,7 +152,7 @@ public class Infinity extends Application implements LifecycleObserver {
             }
         });
 
-        EventBus.builder().addIndex(new EventBusIndex()).installDefaultEventBus();
+        // EventBus.builder().addIndex(new EventBusIndex()).installDefaultEventBus();
 
         EventBus.getDefault().register(this);
 
