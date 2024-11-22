@@ -143,7 +143,7 @@ public class RichTextJSONConverter implements Visitor {
         UploadedImagePlugin uploadedImagePlugin = new UploadedImagePlugin();
         uploadedImagePlugin.setUploadedImages(uploadedImages);
         Markwon markwon = MarkdownUtils.createContentSubmissionRedditMarkwon(
-                context, uploadedImagePlugin, new GiphyGifPlugin(giphyGif, uploadedImages));
+                context, uploadedImagePlugin);
 
         List<Node> nodes = MarkwonReducer.directChildren().reduce(markwon.parse(markdown));
 

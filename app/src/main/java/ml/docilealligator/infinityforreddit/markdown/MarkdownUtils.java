@@ -78,8 +78,7 @@ public class MarkdownUtils {
 
     @NonNull
     public static Markwon createContentSubmissionRedditMarkwon(@NonNull Context context,
-                                                               @NonNull UploadedImagePlugin uploadedImagePlugin,
-                                                               @NonNull GiphyGifPlugin giphyGifPlugin) {
+                                                               @NonNull UploadedImagePlugin uploadedImagePlugin {
         return Markwon.builder(context)
                 .usePlugin(MarkwonInlineParserPlugin.create(plugin -> {
                     plugin.excludeInlineProcessor(HtmlInlineProcessor.class);
@@ -90,7 +89,6 @@ public class MarkdownUtils {
                 .usePlugin(RedditHeadingPlugin.create())
                 .usePlugin(StrikethroughPlugin.create())
                 .usePlugin(LinkifyPlugin.create(Linkify.WEB_URLS))
-                .usePlugin(giphyGifPlugin)
                 .usePlugin(uploadedImagePlugin)
                 .usePlugin(TableEntryPlugin.create(context))
                 .build();
