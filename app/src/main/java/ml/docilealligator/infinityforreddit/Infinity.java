@@ -179,9 +179,9 @@ public class Infinity extends Application implements LifecycleObserver {
         }
     }
 
-    // public AppComponent getAppComponent() {
-    //     return mAppComponent;
-    // }
+    public AppComponent getAppComponent() {
+        return mAppComponent;
+    }
 
     @Subscribe
     public void onToggleSecureModeEvent(ToggleSecureModeEvent secureModeEvent) {
