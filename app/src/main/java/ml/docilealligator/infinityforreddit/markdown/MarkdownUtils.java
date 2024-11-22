@@ -78,7 +78,7 @@ public class MarkdownUtils {
 
     @NonNull
     public static Markwon createContentSubmissionRedditMarkwon(@NonNull Context context,
-                                                               @NonNull UploadedImagePlugin uploadedImagePlugin {
+                                                               @NonNull UploadedImagePlugin uploadedImagePlugin) {
         return Markwon.builder(context)
                 .usePlugin(MarkwonInlineParserPlugin.create(plugin -> {
                     plugin.excludeInlineProcessor(HtmlInlineProcessor.class);
