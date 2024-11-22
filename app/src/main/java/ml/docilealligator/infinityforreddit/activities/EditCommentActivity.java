@@ -256,7 +256,7 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
             params.put(APIUtils.THING_ID_KEY, mFullName);
             if (!uploadedImages.isEmpty() || false) {
                 try {
-                    params.put(APIUtils.RICHTEXT_JSON_KEY, new RichTextJSONConverter().constructRichTextJSON(this, content, uploadedImages, giphyGif));
+                    params.put(APIUtils.RICHTEXT_JSON_KEY, new RichTextJSONConverter().constructRichTextJSON(this, content, uploadedImages, null));
                     params.put(APIUtils.TEXT_KEY, "");
                 } catch (JSONException e) {
                     isSubmitting = false;
