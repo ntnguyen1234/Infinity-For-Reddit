@@ -614,7 +614,7 @@ public class RichTextJSONConverter implements Visitor {
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-        } else if (customBlock instanceof GiphyGifBlock) {
+        } else if (false) {
             //Nothing is allowed inside this block.
             try {
                 JSONObject nodeJSON = new JSONObject();
