@@ -185,7 +185,7 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
         binding.commentEditTextEditCommentActivity.requestFocus();
         Utils.showKeyboard(this, new Handler(), binding.commentEditTextEditCommentActivity);
 
-        Giphy.INSTANCE.configure(this, APIUtils.GIPHY_GIF_API_KEY);
+        // Giphy.INSTANCE.configure(this, APIUtils.GIPHY_GIF_API_KEY);
     }
 
     @Override
@@ -349,7 +349,7 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(UPLOADED_IMAGES_STATE, uploadedImages);
-        outState.putParcelable(GIPHY_GIF_STATE, giphyGif);
+        // outState.putParcelable(GIPHY_GIF_STATE, giphyGif);
     }
 
     @Override

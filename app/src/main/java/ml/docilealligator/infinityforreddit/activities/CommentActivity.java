@@ -275,7 +275,7 @@ public class CommentActivity extends BaseActivity implements UploadImageEnabledA
         if (savedInstanceState != null) {
             selectedAccount = savedInstanceState.getParcelable(SELECTED_ACCOUNT_STATE);
             uploadedImages = savedInstanceState.getParcelableArrayList(UPLOADED_IMAGES_STATE);
-            giphyGif = savedInstanceState.getParcelable(GIPHY_GIF_STATE);
+            // giphyGif = savedInstanceState.getParcelable(GIPHY_GIF_STATE);
 
             if (selectedAccount != null) {
                 mGlide.load(selectedAccount.getProfileImageUrl())
@@ -331,7 +331,7 @@ public class CommentActivity extends BaseActivity implements UploadImageEnabledA
         binding.commentCommentEditText.requestFocus();
         Utils.showKeyboard(this, new Handler(), binding.commentCommentEditText);
 
-        Giphy.INSTANCE.configure(this, APIUtils.GIPHY_GIF_API_KEY);
+        // Giphy.INSTANCE.configure(this, APIUtils.GIPHY_GIF_API_KEY);
     }
 
     private void loadCurrentAccount() {
@@ -358,7 +358,7 @@ public class CommentActivity extends BaseActivity implements UploadImageEnabledA
         super.onSaveInstanceState(outState);
         outState.putParcelable(SELECTED_ACCOUNT_STATE, selectedAccount);
         outState.putParcelableArrayList(UPLOADED_IMAGES_STATE, uploadedImages);
-        outState.putParcelable(GIPHY_GIF_STATE, giphyGif);
+        // outState.putParcelable(GIPHY_GIF_STATE, giphyGif);
     }
 
     @Override
@@ -458,7 +458,7 @@ public class CommentActivity extends BaseActivity implements UploadImageEnabledA
                     .build())
                     .build();
             SendComment.sendComment(this, mExecutor, new Handler(), binding.commentCommentEditText.getText().toString(),
-                    parentFullname, parentDepth, uploadedImages, giphyGif, newAuthenticatorOauthRetrofit, selectedAccount,
+                    parentFullname, parentDepth, uploadedImages, null, newAuthenticatorOauthRetrofit, selectedAccount,
                     new SendComment.SendCommentListener() {
                         @Override
                         public void sendCommentSuccess(Comment comment) {
