@@ -143,7 +143,7 @@ public class RichTextJSONConverter implements Visitor {
         UploadedImagePlugin uploadedImagePlugin = new UploadedImagePlugin();
         uploadedImagePlugin.setUploadedImages(uploadedImages);
         Markwon markwon = MarkdownUtils.createContentSubmissionRedditMarkwon(
-                context, uploadedImagePlugin);
+                context, uploadedImagePlugin, new GiphyGifPlugin(giphyGif, uploadedImages));
 
         List<Node> nodes = MarkwonReducer.directChildren().reduce(markwon.parse(markdown));
 
@@ -614,14 +614,14 @@ public class RichTextJSONConverter implements Visitor {
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-        } else if (false) {
+        } else if (customBlock instanceof GiphyGifBlock) {
             //Nothing is allowed inside this block.
             try {
-                // JSONObject nodeJSON = new JSONObject();
-                // nodeJSON.put(TYPE, GIF_E);
-                // nodeJSON.put(IMAGE_ID, ((GiphyGifBlock) customBlock).giphyGif.id);
+                JSONObject nodeJSON = new JSONObject();
+                nodeJSON.put(TYPE, GIF_E);
+                nodeJSON.put(IMAGE_ID, ((GiphyGifBlock) customBlock).giphyGif.id);
 
-                // document.put(nodeJSON);
+                document.put(nodeJSON);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }

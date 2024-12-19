@@ -45,7 +45,7 @@ public class Infinity extends Application implements LifecycleObserver {
     public Typeface typeface;
     public Typeface titleTypeface;
     public Typeface contentTypeface;
-    // private AppComponent mAppComponent;
+    private AppComponent mAppComponent;
     private NetworkWifiStatusReceiver mNetworkWifiStatusReceiver;
     private boolean appLock;
     private long appLockTimeout;
@@ -62,10 +62,10 @@ public class Infinity extends Application implements LifecycleObserver {
     public void onCreate() {
         super.onCreate();
 
-        // mAppComponent = DaggerAppComponent.factory()
-        //         .create(this);
+        mAppComponent = DaggerAppComponent.factory()
+                .create(this);
 
-        // mAppComponent.inject(this);
+        mAppComponent.inject(this);
 
         appLock = mSecuritySharedPreferences.getBoolean(SharedPreferencesUtils.APP_LOCK, false);
         appLockTimeout = Long.parseLong(mSecuritySharedPreferences.getString(SharedPreferencesUtils.APP_LOCK_TIMEOUT, "600000"));
@@ -152,7 +152,7 @@ public class Infinity extends Application implements LifecycleObserver {
             }
         });
 
-        // EventBus.builder().addIndex(new EventBusIndex()).installDefaultEventBus();
+        EventBus.builder().addIndex(new EventBusIndex()).installDefaultEventBus();
 
         EventBus.getDefault().register(this);
 

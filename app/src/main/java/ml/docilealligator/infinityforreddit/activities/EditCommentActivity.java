@@ -18,10 +18,10 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-// import com.giphy.sdk.core.models.Media;
-// import com.giphy.sdk.ui.GPHContentType;
-// import com.giphy.sdk.ui.Giphy;
-// import com.giphy.sdk.ui.views.GiphyDialogFragment;
+import com.giphy.sdk.core.models.Media;
+import com.giphy.sdk.ui.GPHContentType;
+import com.giphy.sdk.ui.Giphy;
+import com.giphy.sdk.ui.views.GiphyDialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -61,7 +61,8 @@ import ml.docilealligator.infinityforreddit.utils.Utils;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class EditCommentActivity extends BaseActivity implements UploadImageEnabledActivity {
+public class EditCommentActivity extends BaseActivity implements UploadImageEnabledActivity,
+        GiphyDialogFragment.GifSelectionListener {
 
     public static final String EXTRA_CONTENT = "EC";
     public static final String EXTRA_FULLNAME = "EF";
@@ -100,7 +101,7 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
     private boolean isSubmitting = false;
     private Uri capturedImageUri;
     private ArrayList<UploadedImage> uploadedImages = new ArrayList<>();
-    // private GiphyGif giphyGif;
+    private GiphyGif giphyGif;
     private ActivityEditCommentBinding binding;
 
     @Override
@@ -150,7 +151,7 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
 
         if (savedInstanceState != null) {
             uploadedImages = savedInstanceState.getParcelableArrayList(UPLOADED_IMAGES_STATE);
-            // giphyGif = savedInstanceState.getParcelable(GIPHY_GIF_STATE);
+            giphyGif = savedInstanceState.getParcelable(GIPHY_GIF_STATE);
         }
 
         MarkdownBottomBarRecyclerViewAdapter adapter = new MarkdownBottomBarRecyclerViewAdapter(
@@ -172,10 +173,10 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
                 fragment.show(getSupportFragmentManager(), fragment.getTag());
             }
 
-            // @Override
-            // public void onSelectGiphyGif() {
-            //     GiphyDialogFragment.Companion.newInstance().show(getSupportFragmentManager(), "giphy_dialog");
-            // }
+            @Override
+            public void onSelectGiphyGif() {
+                GiphyDialogFragment.Companion.newInstance().show(getSupportFragmentManager(), "giphy_dialog");
+            }
         });
 
         binding.markdownBottomBarRecyclerViewEditCommentActivity.setLayoutManager(new LinearLayoutManagerBugFixed(this,
@@ -185,7 +186,7 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
         binding.commentEditTextEditCommentActivity.requestFocus();
         Utils.showKeyboard(this, new Handler(), binding.commentEditTextEditCommentActivity);
 
-        // Giphy.INSTANCE.configure(this, APIUtils.GIPHY_GIF_API_KEY);
+        Giphy.INSTANCE.configure(this, APIUtils.GIPHY_GIF_API_KEY);
     }
 
     @Override
@@ -254,9 +255,9 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
 
             Map<String, String> params = new HashMap<>();
             params.put(APIUtils.THING_ID_KEY, mFullName);
-            if (!uploadedImages.isEmpty() || false) {
+            if (!uploadedImages.isEmpty() || giphyGif != null) {
                 try {
-                    params.put(APIUtils.RICHTEXT_JSON_KEY, new RichTextJSONConverter().constructRichTextJSON(this, content, uploadedImages, null));
+                    params.put(APIUtils.RICHTEXT_JSON_KEY, new RichTextJSONConverter().constructRichTextJSON(this, content, uploadedImages, giphyGif));
                     params.put(APIUtils.TEXT_KEY, "");
                 } catch (JSONException e) {
                     isSubmitting = false;
@@ -349,7 +350,7 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(UPLOADED_IMAGES_STATE, uploadedImages);
-        // outState.putParcelable(GIPHY_GIF_STATE, giphyGif);
+        outState.putParcelable(GIPHY_GIF_STATE, giphyGif);
     }
 
     @Override
@@ -421,26 +422,26 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
 
     }
 
-    // @Override
-    // public void onGifSelected(@NonNull Media media, @Nullable String s, @NonNull GPHContentType gphContentType) {
-    //     this.giphyGif = new GiphyGif(media.getId(), true);
+    @Override
+    public void onGifSelected(@NonNull Media media, @Nullable String s, @NonNull GPHContentType gphContentType) {
+        this.giphyGif = new GiphyGif(media.getId(), true);
 
-    //     int start = Math.max(binding.commentEditTextEditCommentActivity.getSelectionStart(), 0);
-    //     int end = Math.max(binding.commentEditTextEditCommentActivity.getSelectionEnd(), 0);
-    //     int realStart = Math.min(start, end);
-    //     if (realStart > 0 && binding.commentEditTextEditCommentActivity.getText().toString().charAt(realStart - 1) != '\n') {
-    //         binding.commentEditTextEditCommentActivity.getText().replace(realStart, Math.max(start, end),
-    //                 "\n![gif](" + giphyGif.id + ")\n",
-    //                 0, "\n![gif]()\n".length() + giphyGif.id.length());
-    //     } else {
-    //         binding.commentEditTextEditCommentActivity.getText().replace(realStart, Math.max(start, end),
-    //                 "![gif](" + giphyGif.id + ")\n",
-    //                 0, "![gif]()\n".length() + giphyGif.id.length());
-    //     }
-    // }
+        int start = Math.max(binding.commentEditTextEditCommentActivity.getSelectionStart(), 0);
+        int end = Math.max(binding.commentEditTextEditCommentActivity.getSelectionEnd(), 0);
+        int realStart = Math.min(start, end);
+        if (realStart > 0 && binding.commentEditTextEditCommentActivity.getText().toString().charAt(realStart - 1) != '\n') {
+            binding.commentEditTextEditCommentActivity.getText().replace(realStart, Math.max(start, end),
+                    "\n![gif](" + giphyGif.id + ")\n",
+                    0, "\n![gif]()\n".length() + giphyGif.id.length());
+        } else {
+            binding.commentEditTextEditCommentActivity.getText().replace(realStart, Math.max(start, end),
+                    "![gif](" + giphyGif.id + ")\n",
+                    0, "![gif]()\n".length() + giphyGif.id.length());
+        }
+    }
 
-    // @Override
-    // public void onDismissed(@NonNull GPHContentType gphContentType) {
+    @Override
+    public void onDismissed(@NonNull GPHContentType gphContentType) {
 
-    // }
+    }
 }
