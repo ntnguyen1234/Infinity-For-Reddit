@@ -28,8 +28,8 @@ public class GiphyGifInfoBottomSheetFragment extends LandscapeExpandedRoundedBot
         FragmentGiphyGifInfoBottomSheetBinding binding = FragmentGiphyGifInfoBottomSheetBinding.inflate(inflater, container, false);
 
         binding.selectGiphyGifButtonUploadedImagesBottomSheetFragment.setOnClickListener(view -> {
-            GiphyDialogFragment.Companion.newInstance().show(activity.getSupportFragmentManager(), "giphy_dialog");
-            dismiss();
+            // GiphyDialogFragment.Companion.newInstance().show(activity.getSupportFragmentManager(), "giphy_dialog");
+            // dismiss();
         });
 
         return binding.getRoot();
