@@ -18,10 +18,10 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.giphy.sdk.core.models.Media;
-import com.giphy.sdk.ui.GPHContentType;
-import com.giphy.sdk.ui.Giphy;
-import com.giphy.sdk.ui.views.GiphyDialogFragment;
+// import com.giphy.sdk.core.models.Media;
+// import com.giphy.sdk.ui.GPHContentType;
+// import com.giphy.sdk.ui.Giphy;
+// import com.giphy.sdk.ui.views.GiphyDialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
