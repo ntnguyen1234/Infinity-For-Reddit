@@ -332,7 +332,7 @@ public class CommentActivity extends BaseActivity implements UploadImageEnabledA
         binding.commentCommentEditText.requestFocus();
         Utils.showKeyboard(this, new Handler(), binding.commentCommentEditText);
 
-        Giphy.INSTANCE.configure(this, APIUtils.GIPHY_GIF_API_KEY);
+        // Giphy.INSTANCE.configure(this, APIUtils.GIPHY_GIF_API_KEY);
     }
 
     private void loadCurrentAccount() {
@@ -621,10 +621,10 @@ public class CommentActivity extends BaseActivity implements UploadImageEnabledA
         }
     }
 
-    @Override
-    public void didSearchTerm(@NonNull String s) {
+    // @Override
+    // public void didSearchTerm(@NonNull String s) {
 
-    }
+    // }
 
     // @Override
     // public void onGifSelected(@NonNull Media media, @Nullable String s, @NonNull GPHContentType gphContentType) {

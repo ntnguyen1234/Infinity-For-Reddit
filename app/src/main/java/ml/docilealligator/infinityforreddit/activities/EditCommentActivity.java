@@ -186,7 +186,7 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
         binding.commentEditTextEditCommentActivity.requestFocus();
         Utils.showKeyboard(this, new Handler(), binding.commentEditTextEditCommentActivity);
 
-        Giphy.INSTANCE.configure(this, APIUtils.GIPHY_GIF_API_KEY);
+        // Giphy.INSTANCE.configure(this, APIUtils.GIPHY_GIF_API_KEY);
     }
 
     @Override
@@ -417,10 +417,10 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
         }
     }
 
-    @Override
-    public void didSearchTerm(@NonNull String s) {
+    // @Override
+    // public void didSearchTerm(@NonNull String s) {
 
-    }
+    // }
 
     // @Override
     // public void onGifSelected(@NonNull Media media, @Nullable String s, @NonNull GPHContentType gphContentType) {
