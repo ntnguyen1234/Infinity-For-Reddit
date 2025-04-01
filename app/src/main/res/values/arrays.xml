@@ -64,6 +64,7 @@
         <item>@string/post_layout_card_3</item>
         <item>@string/post_layout_compact</item>
         <item>@string/post_layout_gallery</item>
+        <item>@string/post_layout_compact_2</item>
     </string-array>
 
     <string-array name="settings_default_link_post_layout_values">
@@ -73,6 +74,7 @@
         <item>4</item>
         <item>1</item>
         <item>2</item>
+        <item>5</item>
     </string-array>
 
     <string-array name="settings_video_autoplay">
@@ -731,6 +733,18 @@
     <string-array name="comment_filter_display_mode">
         <item>@string/comment_filter_display_mode_remove_comments</item>
         <item>@string/comment_filter_display_mode_fully_collapse_comments</item>
+    </string-array>
+
+    <string-array name="settings_proxy_type">
+        <item>@string/proxy_http</item>
+        <item>@string/proxy_socks</item>
+        <item>@string/proxy_direct</item>
+    </string-array>
+
+    <string-array name="settings_proxy_type_values">
+        <item>HTTP</item>
+        <item>SOCKS</item>
+        <item>DIRECT</item>
     </string-array>
 
 </resources>

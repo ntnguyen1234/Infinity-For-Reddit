@@ -78,6 +78,7 @@ public class SharedPreferencesUtils {
     public static final int POST_LAYOUT_GALLERY = 2;
     public static final int POST_LAYOUT_CARD_2 = 3;
     public static final int POST_LAYOUT_CARD_3 = 4;
+    public static final int POST_LAYOUT_COMPACT_2 = 5;
 
     public static final String FRONT_PAGE_SCROLLED_POSITION_SHARED_PREFERENCES_FILE = "ml.docilealligator.infinityforreddit.front_page_scrolled_position";
     public static final String FRONT_PAGE_SCROLLED_POSITION_FRONT_PAGE_BASE = "_front_page";
@@ -223,6 +224,8 @@ public class SharedPreferencesUtils {
     private static final String POST_DETAIL_FAB_PORTRAIT_Y_BASE = "fab_portrait_y_";
     private static final String POST_DETAIL_FAB_LANDSCAPE_X_BASE = "fab_landscape_x_";
     private static final String POST_DETAIL_FAB_LANDSCAPE_Y_BASE = "fab_landscape_y_";
+    public static final String REDDIT_VIDEO_DEFAULT_RESOLUTION_NO_DATA_SAVING = "reddit_video_default_resolution_no_data_saving";
+    public static final String HIDE_FAB_IN_POST_DETAILS = "hide_fab_in_post_details";
 
     public static String getPostDetailFabPortraitX(@Nullable Display display) {
         if (display == null) {
@@ -422,6 +425,12 @@ public class SharedPreferencesUtils {
     public static final String INTERNAL_SHARED_PREFERENCES_FILE = "ml.docilealligator.infinityforreddit.internal";
     public static final String HAS_REQUESTED_NOTIFICATION_PERMISSION = "has_requested_notification_permission";
     public static final String DO_NOT_SHOW_REDDIT_API_INFO_V2_AGAIN = "do_not_show_reddit_api_info_v2_again";
+
+    public static final String PROXY_SHARED_PREFERENCES_FILE = "ml.docilealligator.infinityforreddit.proxy";
+    public static final String PROXY_ENABLED = "proxy_enabled";
+    public static final String PROXY_TYPE = "proxy_type";
+    public static final String PROXY_HOSTNAME = "proxy_hostname";
+    public static final String PROXY_PORT = "proxy_port";
 
     //Legacy Settings
     public static final String MAIN_PAGE_TAB_1_TITLE_LEGACY = "main_page_tab_1_title";

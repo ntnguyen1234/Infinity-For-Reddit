@@ -58,8 +58,6 @@
     <string name="action_unhide_post">"Beitrag wieder anzeigen"</string>
     <string name="action_edit_post">"Beitrag bearbeiten"</string>
     <string name="action_delete_post">"Beitrag löschen"</string>
-    <string name="action_mark_nsfw">"NSFW-Markierung setzen"</string>
-    <string name="action_unmark_nsfw">"NSFW-Markierung entfernen"</string>
     <string name="action_mark_spoiler">"Spoiler-Markierung setzen"</string>
     <string name="action_unmark_spoiler">"Spoiler-Markierung entfernen"</string>
     <string name="action_edit_flair">"Flair bearbeiten"</string>
@@ -104,7 +102,6 @@ Tippen für Neuversuch."</string>
     <string name="load_messages_failed">"Fehler beim Laden der Nachrichten.
 Tippen für Neuversuch."</string>
     <string name="no_messages">"Leer"</string>
-    <string name="nsfw">"NSFW"</string>
 
     <!-- Fuzzy -->
     <string name="karma_info">"Karma: %1$,d"</string>
@@ -271,12 +268,6 @@ Tippen für Neuversuch."</string>
     <string name="edit_success">"Bearbeiten erfolgreich"</string>
     <string name="delete_post_success">"Löschen erfolgreich"</string>
     <string name="delete_post_failed">"Löschen fehlgeschlagen"</string>
-    <string name="mark_nsfw_success">"NSFW-Markierung erfolgreich"</string>
-    <string name="mark_nsfw_failed">"NSFW-Markierung fehlgeschlagen"</string>
-
-    <!-- Fuzzy -->
-    <string name="unmark_nsfw_success">"Entfernen der NSFW-Markierung erfolgreich"</string>
-    <string name="unmark_nsfw_failed">"Entfernen der NSFW-Markierung fehlgeschlagen"</string>
 
     <!-- Fuzzy -->
     <string name="mark_spoiler_success">"Spoiler-Markierung erfolgreich"</string>
@@ -311,7 +302,6 @@ Tippen für Neuversuch."</string>
     <string name="settigns_video_title">"Video"</string>
     <string name="settings_video_autoplay_title">"Videos automatisch abspielen"</string>
     <string name="settings_mute_autoplaying_videos_title">"Automatisch abgespielte Videos stummschalten"</string>
-    <string name="settings_autoplay_nsfw_videos_title">"NSFW-Videos automatisch abspielen"</string>
     <string name="settings_start_autoplay_visible_area_offset_portrait_title">"Versatz für sichtbaren Bereich bei automatisch abgespielten Videos (Portrait)"</string>
 
     <!-- Fuzzy -->
@@ -333,7 +323,6 @@ Tippen für Neuversuch."</string>
     <string name="settings_volume_keys_navigate_comments_title">"Lautstärketasten nutzen, um durch Kommentare in Beträgen zu navigieren"</string>
     <string name="settings_volume_keys_navigate_posts_title">"Lautstärketasten nutzen, um durch Beiträge zu navigieren"</string>
     <string name="settings_mute_video_title">"Videos stummschalten"</string>
-    <string name="settings_mute_nsfw_video_title">"NSFW-Videos stummschalten"</string>
 
     <!-- Fuzzy -->
     <string name="settings_video_player_ignore_nav_bar_title">"Navigationsleiste im Video-Player ignorieren"</string>
@@ -429,6 +418,10 @@ Tippen für Neuversuch."</string>
     <string name="settings_tab_post_type">"Typ"</string>
     <string name="settings_tab_subreddit_name">"Subreddit-Name (ohne r/ Präfix)"</string>
 
+    <!-- Proxy -->
+    <string name="settings_proxy_enabled">Proxy verwenden</string>
+    <string name="settings_proxy_type">Proxy-Typ</string>
+
     <!-- Fuzzy -->
     <string name="settings_tab_multi_reddit_name">"Multireddit-Name (/user/DeinBenutzername/m/DeinMultiredditName) (nur Kleinbuchstaben)"</string>
     <string name="settings_tab_username">"Benutzername (ohne u/ Präfix)"</string>
@@ -507,8 +500,6 @@ https://play.google.com/store/apps/details?id=ml.docilealligator.infinityforredd
     <string name="delete_multi_reddit_success">"Löschen erfolgreich"</string>
     <string name="delete_multi_reddit_failed">"Löschen fehlgeschlagen"</string>
     <string name="delete_multi_reddit_dialog_message">"Bist du sicher?"</string>
-    <string name="enable_nsfw">"NSFW aktivieren"</string>
-    <string name="disable_nsfw">"NSFW deaktivieren"</string>
     <string name="cannot_save_image">"Kann das Bild nicht speichern"</string>
     <string name="cannot_save_gif">"Kann das GIF nicht speichern"</string>
     <string name="cannot_get_storage">"Kann nicht auf den App-Speicher zugreifen"</string>
@@ -608,10 +599,6 @@ https://play.google.com/store/apps/details?id=ml.docilealligator.infinityforredd
     <string name="theme_item_spoiler_background_color_detail">"Angewandt auf: Hintergrund der Spoiler-Markierung"</string>
     <string name="theme_item_spoiler_text_color">"Textfarbe für Spoiler"</string>
     <string name="theme_item_spoiler_text_color_detail">"Angewandt auf: Textfarbe in der Spoiler-Markierung"</string>
-    <string name="theme_item_nsfw_background_color">"Hintergrundfarbe für NSFW"</string>
-    <string name="theme_item_nsfw_background_color_detail">"Angewandt auf: Hintergrund der NSFW-Markierung"</string>
-    <string name="theme_item_nsfw_text_color">"Textfarbe für NSFW"</string>
-    <string name="theme_item_nsfw_text_color_detail">"Angewandt auf: Textfarbe der NSFW-Markierung"</string>
     <string name="theme_item_flair_background_color">"Flair-Hintergrundfarbe"</string>
     <string name="theme_item_flair_background_color_detail">"Angewandt auf: Hintergrund von Flairs"</string>
     <string name="theme_item_flair_text_color">"Flair-Textfarbe"</string>
@@ -871,8 +858,6 @@ Automatisches Abspielen von Videos ist deaktiviert."</string>
 
     <!-- Fuzzy -->
     <string name="warning">"Warnung"</string>
-    <string name="this_is_a_nsfw_subreddit">"Dies ist ein NSFW-Subreddit."</string>
-    <string name="this_user_has_nsfw_content">"Dieser Nutzer hat NSFW-Inhalte"</string>
     <string name="dismiss">"Verwerfen"</string>
     <string name="leave">"Verlassen"</string>
 
@@ -883,10 +868,6 @@ Automatisches Abspielen von Videos ist deaktiviert."</string>
     <string name="go_to_user">"Zum Benutzer gehen"</string>
     <string name="go_to_thing_hint">"Name"</string>
     <string name="random">"Zufällig"</string>
-    <string name="random_subreddit">"Zufälliges Subreddit"</string>
-    <string name="random_nsfw_subreddit">"Zufälliger NSFW-Subreddit"</string>
-    <string name="random_post">"Zufälliger Beitrag"</string>
-    <string name="random_nsfw_post">"Zufälliger NSFW-Beitrag"</string>
     <string name="fetch_random_thing_failed">"Versuche es später erneut"</string>
     <string name="downloading">"Am Herunterladen"</string>
     <string name="subreddit_filter_popular_and_all_activity_label">"r/all und r/popular"</string>
@@ -1188,8 +1169,6 @@ Antippen zum Wiederholen."</string>
     <string name="app_lock_timeout_24_hours">"24 Stunden"</string>
     <string name="edit_profile_activity_label">"Profil bearbeiten"</string>
     <string name="action_contact_mods">"Moderator kontaktieren"</string>
-    <string name="settings_save_nsfw_media_in_different_folder_title">"NSFW-Medien an anderem Speicherort"</string>
-    <string name="settings_nsfw_download_location_title">"NSFW Speicherort"</string>
     <string name="fetch_streamable_video_failed">"Ergreifen von Streamable-Vide fehlgeschlagen"</string>
 
     <!-- EditProfileService Notification -->
@@ -1258,6 +1237,8 @@ Antippen zum Wiederholen."</string>
     <string name="option_5_hint">"Option 5"</string>
     <string name="option_6_hint">"Option 6"</string>
     <string name="not_a_valid_number">"Keine valide Nummer"</string>
+    <string name="not_a_valid_ip_or_hostname">Ungültige IP oder Hostname</string>
+    <string name="not_a_valid_port">Ungültiger Port (0 - 65535)</string>
     <string name="post_karma">"Beitragskarma:"</string>
     <string name="comment_karma">"Kommentarkarma:"</string>
     <string name="awarder_karma">"Auszeichnungskarma:"</string>

@@ -66,6 +66,7 @@ import ml.docilealligator.infinityforreddit.activities.WebViewActivity;
 import ml.docilealligator.infinityforreddit.activities.WikiActivity;
 import ml.docilealligator.infinityforreddit.bottomsheetfragments.AccountChooserBottomSheetFragment;
 import ml.docilealligator.infinityforreddit.bottomsheetfragments.FlairBottomSheetFragment;
+import ml.docilealligator.infinityforreddit.bottomsheetfragments.PostOptionsBottomSheetFragment;
 import ml.docilealligator.infinityforreddit.fragments.CommentsListingFragment;
 import ml.docilealligator.infinityforreddit.fragments.CustomThemeListingFragment;
 import ml.docilealligator.infinityforreddit.fragments.FollowedUsersListingFragment;
@@ -100,6 +101,7 @@ import ml.docilealligator.infinityforreddit.settings.MiscellaneousPreferenceFrag
 import ml.docilealligator.infinityforreddit.settings.NotificationPreferenceFragment;
 import ml.docilealligator.infinityforreddit.settings.NsfwAndSpoilerFragment;
 import ml.docilealligator.infinityforreddit.settings.PostHistoryFragment;
+import ml.docilealligator.infinityforreddit.settings.ProxyPreferenceFragment;
 import ml.docilealligator.infinityforreddit.settings.SecurityPreferenceFragment;
 import ml.docilealligator.infinityforreddit.settings.ThemePreferenceFragment;
 import ml.docilealligator.infinityforreddit.settings.TranslationFragment;
@@ -311,6 +313,10 @@ public interface AppComponent {
     void inject(CustomThemeListingFragment customThemeListingFragment);
 
     void inject(LoginChromeCustomTabActivity loginChromeCustomTabActivity);
+
+    void inject(PostOptionsBottomSheetFragment postOptionsBottomSheetFragment);
+
+    void inject(ProxyPreferenceFragment proxyPreferenceFragment);
 
     @Component.Factory
     interface Factory {

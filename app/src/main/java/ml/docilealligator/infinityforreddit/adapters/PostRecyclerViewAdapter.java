@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,7 +27,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.OptIn;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.constraintlayout.widget.Barrier;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
@@ -99,6 +97,8 @@ import ml.docilealligator.infinityforreddit.databinding.ItemPostCard3TextBinding
 import ml.docilealligator.infinityforreddit.databinding.ItemPostCard3VideoTypeAutoplayBinding;
 import ml.docilealligator.infinityforreddit.databinding.ItemPostCard3VideoTypeAutoplayLegacyControllerBinding;
 import ml.docilealligator.infinityforreddit.databinding.ItemPostCard3WithPreviewBinding;
+import ml.docilealligator.infinityforreddit.databinding.ItemPostCompact2Binding;
+import ml.docilealligator.infinityforreddit.databinding.ItemPostCompact2RightThumbnailBinding;
 import ml.docilealligator.infinityforreddit.databinding.ItemPostCompactBinding;
 import ml.docilealligator.infinityforreddit.databinding.ItemPostCompactRightThumbnailBinding;
 import ml.docilealligator.infinityforreddit.databinding.ItemPostGalleryBinding;
@@ -143,16 +143,17 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
     private static final int VIEW_TYPE_POST_CARD_GALLERY_TYPE = 3;
     private static final int VIEW_TYPE_POST_CARD_TEXT_TYPE = 4;
     private static final int VIEW_TYPE_POST_COMPACT = 5;
-    private static final int VIEW_TYPE_POST_GALLERY = 6;
-    private static final int VIEW_TYPE_POST_GALLERY_GALLERY_TYPE = 7;
-    private static final int VIEW_TYPE_POST_CARD_2_VIDEO_AUTOPLAY_TYPE = 8;
-    private static final int VIEW_TYPE_POST_CARD_2_WITH_PREVIEW_TYPE = 9;
-    private static final int VIEW_TYPE_POST_CARD_2_GALLERY_TYPE = 10;
-    private static final int VIEW_TYPE_POST_CARD_2_TEXT_TYPE = 11;
-    private static final int VIEW_TYPE_POST_CARD_3_VIDEO_AUTOPLAY_TYPE = 12;
-    private static final int VIEW_TYPE_POST_CARD_3_WITH_PREVIEW_TYPE = 13;
-    private static final int VIEW_TYPE_POST_CARD_3_GALLERY_TYPE = 14;
-    private static final int VIEW_TYPE_POST_CARD_3_TEXT_TYPE = 15;
+    private static final int VIEW_TYPE_POST_COMPACT_2 = 6;
+    private static final int VIEW_TYPE_POST_GALLERY = 7;
+    private static final int VIEW_TYPE_POST_GALLERY_GALLERY_TYPE = 8;
+    private static final int VIEW_TYPE_POST_CARD_2_VIDEO_AUTOPLAY_TYPE = 9;
+    private static final int VIEW_TYPE_POST_CARD_2_WITH_PREVIEW_TYPE = 10;
+    private static final int VIEW_TYPE_POST_CARD_2_GALLERY_TYPE = 11;
+    private static final int VIEW_TYPE_POST_CARD_2_TEXT_TYPE = 12;
+    private static final int VIEW_TYPE_POST_CARD_3_VIDEO_AUTOPLAY_TYPE = 13;
+    private static final int VIEW_TYPE_POST_CARD_3_WITH_PREVIEW_TYPE = 14;
+    private static final int VIEW_TYPE_POST_CARD_3_GALLERY_TYPE = 15;
+    private static final int VIEW_TYPE_POST_CARD_3_TEXT_TYPE = 16;
 
     private static final DiffUtil.ItemCallback<Post> DIFF_CALLBACK = new DiffUtil.ItemCallback<>() {
         @Override
@@ -232,7 +233,7 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
     private boolean mAutoplay = false;
     private boolean mAutoplayNsfwVideos;
     private boolean mMuteAutoplayingVideos;
-    private boolean mShowThumbnailOnTheRightInCompactLayout;
+    private boolean mShowThumbnailOnTheLeftInCompactLayout;
     private double mStartAutoplayVisibleAreaOffset;
     private boolean mMuteNSFWVideo;
     private boolean mLongPressToHideToolbarInCompactLayout;
@@ -298,7 +299,7 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
             }
             mAutoplayNsfwVideos = sharedPreferences.getBoolean(SharedPreferencesUtils.AUTOPLAY_NSFW_VIDEOS, true);
             mMuteAutoplayingVideos = sharedPreferences.getBoolean(SharedPreferencesUtils.MUTE_AUTOPLAYING_VIDEOS, true);
-            mShowThumbnailOnTheRightInCompactLayout = sharedPreferences.getBoolean(
+            mShowThumbnailOnTheLeftInCompactLayout = sharedPreferences.getBoolean(
                     SharedPreferencesUtils.SHOW_THUMBNAIL_ON_THE_LEFT_IN_COMPACT_LAYOUT, false);
 
             Resources resources = activity.getResources();
@@ -422,6 +423,8 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                                 return VIEW_TYPE_POST_GALLERY;
                             case SharedPreferencesUtils.POST_LAYOUT_COMPACT:
                                 return VIEW_TYPE_POST_COMPACT;
+                            case SharedPreferencesUtils.POST_LAYOUT_COMPACT_2:
+                                return VIEW_TYPE_POST_COMPACT_2;
                         }
                         return VIEW_TYPE_POST_CARD_WITH_PREVIEW_TYPE;
                     default:
@@ -446,6 +449,23 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                 }
             }
             return VIEW_TYPE_POST_COMPACT;
+        } else if (mPostLayout == SharedPreferencesUtils.POST_LAYOUT_COMPACT_2) {
+            Post post = getItem(position);
+            if (post != null) {
+                if (post.getPostType() == Post.LINK_TYPE || post.getPostType() == Post.NO_PREVIEW_LINK_TYPE) {
+                    switch (mDefaultLinkPostLayout) {
+                        case SharedPreferencesUtils.POST_LAYOUT_CARD:
+                            return VIEW_TYPE_POST_CARD_WITH_PREVIEW_TYPE;
+                        case SharedPreferencesUtils.POST_LAYOUT_CARD_2:
+                            return VIEW_TYPE_POST_CARD_2_WITH_PREVIEW_TYPE;
+                        case SharedPreferencesUtils.POST_LAYOUT_CARD_3:
+                            return VIEW_TYPE_POST_CARD_3_WITH_PREVIEW_TYPE;
+                        case SharedPreferencesUtils.POST_LAYOUT_GALLERY:
+                            return VIEW_TYPE_POST_GALLERY;
+                    }
+                }
+            }
+            return VIEW_TYPE_POST_COMPACT_2;
         } else if (mPostLayout == SharedPreferencesUtils.POST_LAYOUT_GALLERY) {
             Post post = getItem(position);
             if (post != null) {
@@ -485,6 +505,8 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                                 return VIEW_TYPE_POST_GALLERY;
                             case SharedPreferencesUtils.POST_LAYOUT_COMPACT:
                                 return VIEW_TYPE_POST_COMPACT;
+                            case SharedPreferencesUtils.POST_LAYOUT_COMPACT_2:
+                                return VIEW_TYPE_POST_COMPACT_2;
                         }
                         return VIEW_TYPE_POST_CARD_2_WITH_PREVIEW_TYPE;
                     default:
@@ -520,6 +542,8 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                                 return VIEW_TYPE_POST_GALLERY;
                             case SharedPreferencesUtils.POST_LAYOUT_COMPACT:
                                 return VIEW_TYPE_POST_COMPACT;
+                            case SharedPreferencesUtils.POST_LAYOUT_COMPACT_2:
+                                return VIEW_TYPE_POST_COMPACT_2;
                         }
                         return VIEW_TYPE_POST_CARD_3_WITH_PREVIEW_TYPE;
                     default:
@@ -551,10 +575,16 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
         } else if (viewType == VIEW_TYPE_POST_CARD_TEXT_TYPE) {
             return new PostTextTypeViewHolder(ItemPostTextBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         } else if (viewType == VIEW_TYPE_POST_COMPACT) {
-            if (mShowThumbnailOnTheRightInCompactLayout) {
-                return new PostCompactRightThumbnailViewHolder(ItemPostCompactRightThumbnailBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
-            } else {
+            if (mShowThumbnailOnTheLeftInCompactLayout) {
                 return new PostCompactLeftThumbnailViewHolder(ItemPostCompactBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+            } else {
+                return new PostCompactRightThumbnailViewHolder(ItemPostCompactRightThumbnailBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+            }
+        } else if (viewType == VIEW_TYPE_POST_COMPACT_2) {
+            if (mShowThumbnailOnTheLeftInCompactLayout) {
+                return new PostCompact2LeftThumbnailViewHolder(ItemPostCompact2Binding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+            } else {
+                return new PostCompact2RightThumbnailViewHolder(ItemPostCompact2RightThumbnailBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
             }
         } else if (viewType == VIEW_TYPE_POST_GALLERY) {
             return new PostGalleryViewHolder(ItemPostGalleryBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
@@ -790,17 +820,21 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                 mGlide.load(R.drawable.ic_thumbtack_24dp).into(((PostViewHolder) holder).stickiedPostImageView);
             }
 
-            if (!mHideTheNumberOfComments) {
-                ((PostViewHolder) holder).commentsCountButton.setVisibility(View.VISIBLE);
-                ((PostViewHolder) holder).commentsCountButton.setText(Integer.toString(post.getNComments()));
-            } else {
-                ((PostViewHolder) holder).commentsCountButton.setVisibility(View.GONE);
+            if (((PostViewHolder) holder).commentsCountButton != null ) {
+                if (!mHideTheNumberOfComments) {
+                    ((PostViewHolder) holder).commentsCountButton.setVisibility(View.VISIBLE);
+                    ((PostViewHolder) holder).commentsCountButton.setText(Integer.toString(post.getNComments()));
+                } else {
+                    ((PostViewHolder) holder).commentsCountButton.setVisibility(View.GONE);
+                }
             }
 
-            if (post.isSaved()) {
-                ((PostViewHolder) holder).saveButton.setIconResource(R.drawable.ic_bookmark_grey_24dp);
-            } else {
-                ((PostViewHolder) holder).saveButton.setIconResource(R.drawable.ic_bookmark_border_grey_24dp);
+            if (((PostViewHolder) holder).saveButton != null) {
+                if (post.isSaved()) {
+                    ((PostViewHolder) holder).saveButton.setIconResource(R.drawable.ic_bookmark_grey_24dp);
+                } else {
+                    ((PostViewHolder) holder).saveButton.setIconResource(R.drawable.ic_bookmark_border_grey_24dp);
+                }
             }
 
             if (holder instanceof PostBaseViewHolder) {
@@ -974,14 +1008,16 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                     }
                 }
 
-                if (mCompactLayoutToolbarHiddenByDefault) {
-                    ViewGroup.LayoutParams params = ((PostCompactBaseViewHolder) holder).bottomConstraintLayout.getLayoutParams();
-                    params.height = 0;
-                    ((PostCompactBaseViewHolder) holder).bottomConstraintLayout.setLayoutParams(params);
-                } else {
-                    ViewGroup.LayoutParams params = ((PostCompactBaseViewHolder) holder).bottomConstraintLayout.getLayoutParams();
-                    params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                    ((PostCompactBaseViewHolder) holder).bottomConstraintLayout.setLayoutParams(params);
+                if (((PostCompactBaseViewHolder) holder).bottomConstraintLayout != null) {
+                    if (mCompactLayoutToolbarHiddenByDefault) {
+                        ViewGroup.LayoutParams params = ((PostCompactBaseViewHolder) holder).bottomConstraintLayout.getLayoutParams();
+                        params.height = 0;
+                        ((PostCompactBaseViewHolder) holder).bottomConstraintLayout.setLayoutParams(params);
+                    } else {
+                        ViewGroup.LayoutParams params = ((PostCompactBaseViewHolder) holder).bottomConstraintLayout.getLayoutParams();
+                        params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                        ((PostCompactBaseViewHolder) holder).bottomConstraintLayout.setLayoutParams(params);
+                    }
                 }
 
                 if (mShowDividerInCompactLayout) {
@@ -1005,25 +1041,35 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
 
                 switch (post.getPostType()) {
                     case Post.IMAGE_TYPE:
-                        ((PostCompactBaseViewHolder) holder).typeTextView.setText(R.string.image);
+                        if (((PostCompactBaseViewHolder) holder).typeTextView != null) {
+                            ((PostCompactBaseViewHolder) holder).typeTextView.setText(R.string.image);
+                        }
                         if (mDataSavingMode && mDisableImagePreview) {
                             ((PostCompactBaseViewHolder) holder).noPreviewPostImageFrameLayout.setVisibility(View.VISIBLE);
                             ((PostCompactBaseViewHolder) holder).noPreviewPostImageView.setImageResource(R.drawable.ic_image_day_night_24dp);
                         }
                         break;
                     case Post.LINK_TYPE:
-                        ((PostCompactBaseViewHolder) holder).typeTextView.setText(R.string.link);
+                        if (((PostCompactBaseViewHolder) holder).typeTextView != null) {
+                            ((PostCompactBaseViewHolder) holder).typeTextView.setText(R.string.link);
+                        }
                         if (mDataSavingMode && mDisableImagePreview) {
                             ((PostCompactBaseViewHolder) holder).noPreviewPostImageFrameLayout.setVisibility(View.VISIBLE);
                             ((PostCompactBaseViewHolder) holder).noPreviewPostImageView.setImageResource(R.drawable.ic_link_day_night_24dp);
                         }
 
-                        ((PostCompactBaseViewHolder) holder).linkTextView.setVisibility(View.VISIBLE);
+                        if (((PostCompactBaseViewHolder) holder).linkTextView != null) {
+                            ((PostCompactBaseViewHolder) holder).linkTextView.setVisibility(View.VISIBLE);
+                        }
                         String domain = Uri.parse(post.getUrl()).getHost();
-                        ((PostCompactBaseViewHolder) holder).linkTextView.setText(domain);
+                        if (((PostCompactBaseViewHolder) holder).linkTextView != null) {
+                            ((PostCompactBaseViewHolder) holder).linkTextView.setText(domain);
+                        }
                         break;
                     case Post.GIF_TYPE:
-                        ((PostCompactBaseViewHolder) holder).typeTextView.setText(R.string.gif);
+                        if (((PostCompactBaseViewHolder) holder).typeTextView != null) {
+                            ((PostCompactBaseViewHolder) holder).typeTextView.setText(R.string.gif);
+                        }
                         if (mDataSavingMode && (mDisableImagePreview || mOnlyDisablePreviewInVideoAndGifPosts)) {
                             ((PostCompactBaseViewHolder) holder).noPreviewPostImageFrameLayout.setVisibility(View.VISIBLE);
                             ((PostCompactBaseViewHolder) holder).noPreviewPostImageView.setImageResource(R.drawable.ic_image_day_night_24dp);
@@ -1033,7 +1079,9 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                         }
                         break;
                     case Post.VIDEO_TYPE:
-                        ((PostCompactBaseViewHolder) holder).typeTextView.setText(R.string.video);
+                        if (((PostCompactBaseViewHolder) holder).typeTextView != null) {
+                            ((PostCompactBaseViewHolder) holder).typeTextView.setText(R.string.video);
+                        }
                         if (mDataSavingMode && (mDisableImagePreview || mOnlyDisablePreviewInVideoAndGifPosts)) {
                             ((PostCompactBaseViewHolder) holder).noPreviewPostImageFrameLayout.setVisibility(View.VISIBLE);
                             ((PostCompactBaseViewHolder) holder).noPreviewPostImageView.setImageResource(R.drawable.ic_video_day_night_24dp);
@@ -1043,17 +1091,23 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                         }
                         break;
                     case Post.NO_PREVIEW_LINK_TYPE:
-                        ((PostCompactBaseViewHolder) holder).typeTextView.setText(R.string.link);
+                        if (((PostCompactBaseViewHolder) holder).typeTextView != null) {
+                            ((PostCompactBaseViewHolder) holder).typeTextView.setText(R.string.link);
+                        }
 
-                        String noPreviewLinkUrl = post.getUrl();
-                        ((PostCompactBaseViewHolder) holder).linkTextView.setVisibility(View.VISIBLE);
-                        String noPreviewLinkDomain = Uri.parse(noPreviewLinkUrl).getHost();
-                        ((PostCompactBaseViewHolder) holder).linkTextView.setText(noPreviewLinkDomain);
+                        if (((PostCompactBaseViewHolder) holder).linkTextView != null) {
+                            ((PostCompactBaseViewHolder) holder).linkTextView.setVisibility(View.VISIBLE);
+                            String noPreviewLinkUrl = post.getUrl();
+                            String noPreviewLinkDomain = Uri.parse(noPreviewLinkUrl).getHost();
+                            ((PostCompactBaseViewHolder) holder).linkTextView.setText(noPreviewLinkDomain);
+                        }
                         ((PostCompactBaseViewHolder) holder).noPreviewPostImageFrameLayout.setVisibility(View.VISIBLE);
                         ((PostCompactBaseViewHolder) holder).noPreviewPostImageView.setImageResource(R.drawable.ic_link_day_night_24dp);
                         break;
                     case Post.GALLERY_TYPE:
-                        ((PostCompactBaseViewHolder) holder).typeTextView.setText(R.string.gallery);
+                        if (((PostCompactBaseViewHolder) holder).typeTextView != null) {
+                            ((PostCompactBaseViewHolder) holder).typeTextView.setText(R.string.gallery);
+                        }
                         if (mDataSavingMode && mDisableImagePreview) {
                             ((PostCompactBaseViewHolder) holder).noPreviewPostImageFrameLayout.setVisibility(View.VISIBLE);
                             ((PostCompactBaseViewHolder) holder).noPreviewPostImageView.setImageResource(R.drawable.ic_gallery_day_night_24dp);
@@ -1063,7 +1117,9 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                         }
                         break;
                     case Post.TEXT_TYPE:
-                        ((PostCompactBaseViewHolder) holder).typeTextView.setText(R.string.text);
+                        if (((PostCompactBaseViewHolder) holder).typeTextView != null) {
+                            ((PostCompactBaseViewHolder) holder).typeTextView.setText(R.string.text);
+                        }
                         break;
                 }
 
@@ -1432,8 +1488,8 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
         mMuteAutoplayingVideos = muteAutoplayingVideos;
     }
 
-    public void setShowThumbnailOnTheRightInCompactLayout(boolean showThumbnailOnTheRightInCompactLayout) {
-        mShowThumbnailOnTheRightInCompactLayout = showThumbnailOnTheRightInCompactLayout;
+    public void setShowThumbnailOnTheLeftInCompactLayout(boolean showThumbnailOnTheLeftInCompactLayout) {
+        mShowThumbnailOnTheLeftInCompactLayout = showThumbnailOnTheLeftInCompactLayout;
     }
 
     public void setStartAutoplayVisibleAreaOffset(double startAutoplayVisibleAreaOffset) {
@@ -1590,7 +1646,9 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
             } else if (holder instanceof PostCompactBaseViewHolder) {
                 mGlide.clear(((PostCompactBaseViewHolder) holder).imageView);
                 ((PostCompactBaseViewHolder) holder).relativeLayout.setVisibility(View.GONE);
-                ((PostCompactBaseViewHolder) holder).linkTextView.setVisibility(View.GONE);
+                if (((PostCompactBaseViewHolder) holder).linkTextView != null) {
+                    ((PostCompactBaseViewHolder) holder).linkTextView.setVisibility(View.GONE);
+                }
                 ((PostCompactBaseViewHolder) holder).progressBar.setVisibility(View.GONE);
                 ((PostCompactBaseViewHolder) holder).imageView.setVisibility(View.GONE);
                 ((PostCompactBaseViewHolder) holder).playButtonImageView.setVisibility(View.GONE);
@@ -1822,9 +1880,14 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
         MaterialButton upvoteButton;
         TextView scoreTextView;
         MaterialButton downvoteButton;
+
+        @Nullable
         MaterialButton commentsCountButton;
+        @Nullable
         MaterialButton saveButton;
+        @Nullable
         MaterialButton shareButton;
+
         Post post;
         int currentPosition;
 
@@ -1848,9 +1911,9 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                          MaterialButton upvoteButton,
                          TextView scoreTextView,
                          MaterialButton downvoteButton,
-                         MaterialButton commentsCountButton,
-                         MaterialButton saveButton,
-                         MaterialButton shareButton) {
+                         @Nullable MaterialButton commentsCountButton,
+                         @Nullable MaterialButton saveButton,
+                         @Nullable MaterialButton shareButton) {
             this.iconGifImageView = iconGifImageView;
             this.stickiedPostImageView = stickiedPostImageView;
             this.postTimeTextView = postTimeTextView;
@@ -1955,9 +2018,9 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                          MaterialButton upvoteButton,
                          TextView scoreTextView,
                          MaterialButton downvoteButton,
-                         MaterialButton commentsCountButton,
-                         MaterialButton saveButton,
-                         MaterialButton shareButton) {
+                         @Nullable MaterialButton commentsCountButton,
+                         @Nullable MaterialButton saveButton,
+                         @Nullable MaterialButton shareButton) {
             this.iconGifImageView = iconGifImageView;
             this.stickiedPostImageView = stickiedPostImageView;
             this.postTimeTextView = postTimeTextView;
@@ -2015,9 +2078,9 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
         void setOnClickListeners(MaterialButton upvoteButton,
                                  TextView scoreTextView,
                                  MaterialButton downvoteButton,
-                                 MaterialButton commentsCountButton,
-                                 MaterialButton saveButton,
-                                 MaterialButton shareButton) {
+                                 @Nullable MaterialButton commentsCountButton,
+                                 @Nullable MaterialButton saveButton,
+                                 @Nullable MaterialButton shareButton) {
             itemView.setOnClickListener(view -> {
                 int position = getBindingAdapterPosition();
                 if (position >= 0 && canStartActivity) {
@@ -2244,95 +2307,101 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                 }
             });
 
-            commentsCountButton.setOnClickListener(view -> itemView.performClick());
+            if (commentsCountButton != null) {
+                commentsCountButton.setOnClickListener(view -> itemView.performClick());
+            }
 
-            saveButton.setOnClickListener(view -> {
-                int position = getBindingAdapterPosition();
-                if (position < 0) {
-                    return;
-                }
-                Post post = getItem(position);
-                if (post != null) {
-                    if (mAccountName.equals(Account.ANONYMOUS_ACCOUNT)) {
-                        Toast.makeText(mActivity, R.string.login_first, Toast.LENGTH_SHORT).show();
+            if (saveButton != null) {
+                saveButton.setOnClickListener(view -> {
+                    int position = getBindingAdapterPosition();
+                    if (position < 0) {
                         return;
                     }
+                    Post post = getItem(position);
+                    if (post != null) {
+                        if (mAccountName.equals(Account.ANONYMOUS_ACCOUNT)) {
+                            Toast.makeText(mActivity, R.string.login_first, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
-                    if (post.isSaved()) {
-                        saveButton.setIconResource(R.drawable.ic_bookmark_border_grey_24dp);
-                        SaveThing.unsaveThing(mOauthRetrofit, mAccessToken, post.getFullName(),
-                                new SaveThing.SaveThingListener() {
-                                    @Override
-                                    public void success() {
-                                        post.setSaved(false);
-                                        if (getBindingAdapterPosition() == position) {
-                                            saveButton.setIconResource(R.drawable.ic_bookmark_border_grey_24dp);
+                        if (post.isSaved()) {
+                            saveButton.setIconResource(R.drawable.ic_bookmark_border_grey_24dp);
+                            SaveThing.unsaveThing(mOauthRetrofit, mAccessToken, post.getFullName(),
+                                    new SaveThing.SaveThingListener() {
+                                        @Override
+                                        public void success() {
+                                            post.setSaved(false);
+                                            if (getBindingAdapterPosition() == position) {
+                                                saveButton.setIconResource(R.drawable.ic_bookmark_border_grey_24dp);
+                                            }
+                                            Toast.makeText(mActivity, R.string.post_unsaved_success, Toast.LENGTH_SHORT).show();
+                                            EventBus.getDefault().post(new PostUpdateEventToPostDetailFragment(post));
                                         }
-                                        Toast.makeText(mActivity, R.string.post_unsaved_success, Toast.LENGTH_SHORT).show();
-                                        EventBus.getDefault().post(new PostUpdateEventToPostDetailFragment(post));
-                                    }
 
-                                    @Override
-                                    public void failed() {
-                                        post.setSaved(true);
-                                        if (getBindingAdapterPosition() == position) {
-                                            saveButton.setIconResource(R.drawable.ic_bookmark_grey_24dp);
+                                        @Override
+                                        public void failed() {
+                                            post.setSaved(true);
+                                            if (getBindingAdapterPosition() == position) {
+                                                saveButton.setIconResource(R.drawable.ic_bookmark_grey_24dp);
+                                            }
+                                            Toast.makeText(mActivity, R.string.post_unsaved_failed, Toast.LENGTH_SHORT).show();
+                                            EventBus.getDefault().post(new PostUpdateEventToPostDetailFragment(post));
                                         }
-                                        Toast.makeText(mActivity, R.string.post_unsaved_failed, Toast.LENGTH_SHORT).show();
-                                        EventBus.getDefault().post(new PostUpdateEventToPostDetailFragment(post));
-                                    }
-                                });
-                    } else {
-                        saveButton.setIconResource(R.drawable.ic_bookmark_grey_24dp);
-                        SaveThing.saveThing(mOauthRetrofit, mAccessToken, post.getFullName(),
-                                new SaveThing.SaveThingListener() {
-                                    @Override
-                                    public void success() {
-                                        post.setSaved(true);
-                                        if (getBindingAdapterPosition() == position) {
-                                            saveButton.setIconResource(R.drawable.ic_bookmark_grey_24dp);
+                                    });
+                        } else {
+                            saveButton.setIconResource(R.drawable.ic_bookmark_grey_24dp);
+                            SaveThing.saveThing(mOauthRetrofit, mAccessToken, post.getFullName(),
+                                    new SaveThing.SaveThingListener() {
+                                        @Override
+                                        public void success() {
+                                            post.setSaved(true);
+                                            if (getBindingAdapterPosition() == position) {
+                                                saveButton.setIconResource(R.drawable.ic_bookmark_grey_24dp);
+                                            }
+                                            Toast.makeText(mActivity, R.string.post_saved_success, Toast.LENGTH_SHORT).show();
+                                            EventBus.getDefault().post(new PostUpdateEventToPostDetailFragment(post));
                                         }
-                                        Toast.makeText(mActivity, R.string.post_saved_success, Toast.LENGTH_SHORT).show();
-                                        EventBus.getDefault().post(new PostUpdateEventToPostDetailFragment(post));
-                                    }
 
-                                    @Override
-                                    public void failed() {
-                                        post.setSaved(false);
-                                        if (getBindingAdapterPosition() == position) {
-                                            saveButton.setIconResource(R.drawable.ic_bookmark_border_grey_24dp);
+                                        @Override
+                                        public void failed() {
+                                            post.setSaved(false);
+                                            if (getBindingAdapterPosition() == position) {
+                                                saveButton.setIconResource(R.drawable.ic_bookmark_border_grey_24dp);
+                                            }
+                                            Toast.makeText(mActivity, R.string.post_saved_failed, Toast.LENGTH_SHORT).show();
+                                            EventBus.getDefault().post(new PostUpdateEventToPostDetailFragment(post));
                                         }
-                                        Toast.makeText(mActivity, R.string.post_saved_failed, Toast.LENGTH_SHORT).show();
-                                        EventBus.getDefault().post(new PostUpdateEventToPostDetailFragment(post));
-                                    }
-                                });
+                                    });
+                        }
                     }
-                }
-            });
+                });
+            }
 
-            shareButton.setOnClickListener(view -> {
-                int position = getBindingAdapterPosition();
-                if (position < 0) {
-                    return;
-                }
-                Post post = getItem(position);
-                if (post != null) {
-                    shareLink(post);
-                }
-            });
+            if (shareButton != null) {
+                shareButton.setOnClickListener(view -> {
+                    int position = getBindingAdapterPosition();
+                    if (position < 0) {
+                        return;
+                    }
+                    Post post = getItem(position);
+                    if (post != null) {
+                        shareLink(post);
+                    }
+                });
 
-            shareButton.setOnLongClickListener(view -> {
-                int position = getBindingAdapterPosition();
-                if (position < 0) {
+                shareButton.setOnLongClickListener(view -> {
+                    int position = getBindingAdapterPosition();
+                    if (position < 0) {
+                        return false;
+                    }
+                    Post post = getItem(position);
+                    if (post != null) {
+                        mActivity.copyLink(post.getPermalink());
+                        return true;
+                    }
                     return false;
-                }
-                Post post = getItem(position);
-                if (post != null) {
-                    mActivity.copyLink(post.getPermalink());
-                    return true;
-                }
-                return false;
-            });
+                });
+            }
         }
 
         void setOnClickListeners(@Nullable CustomTextView typeTextView,
@@ -2341,9 +2410,9 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                                  MaterialButton upvoteButton,
                                  TextView scoreTextView,
                                  MaterialButton downvoteButton,
-                                 MaterialButton commentsCountButton,
-                                 MaterialButton saveButton,
-                                 MaterialButton shareButton) {
+                                 @Nullable MaterialButton commentsCountButton,
+                                 @Nullable MaterialButton saveButton,
+                                 @Nullable MaterialButton shareButton) {
             setOnClickListeners(upvoteButton,
                     scoreTextView,
                     downvoteButton,
@@ -2870,9 +2939,10 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                 PostOptionsBottomSheetFragment postOptionsBottomSheetFragment;
                 if (post.getPostType() == Post.GALLERY_TYPE && this instanceof PostBaseGalleryTypeViewHolder) {
                     postOptionsBottomSheetFragment = PostOptionsBottomSheetFragment.newInstance(post,
+                            getBindingAdapterPosition(),
                             ((LinearLayoutManagerBugFixed) ((PostBaseGalleryTypeViewHolder) this).galleryRecyclerView.getLayoutManager()).findFirstVisibleItemPosition());
                 } else {
-                    postOptionsBottomSheetFragment = PostOptionsBottomSheetFragment.newInstance(post);
+                    postOptionsBottomSheetFragment = PostOptionsBottomSheetFragment.newInstance(post, getBindingAdapterPosition());
                 }
                 postOptionsBottomSheetFragment.show(mActivity.getSupportFragmentManager(), postOptionsBottomSheetFragment.getTag());
                 return true;
@@ -3608,16 +3678,14 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
 
     public class PostCompactBaseViewHolder extends PostViewHolder {
         TextView nameTextView;
-        ConstraintLayout titleAndImageConstraintLayout;
-        TextView linkTextView;
+        @Nullable TextView linkTextView;
         RelativeLayout relativeLayout;
         ProgressBar progressBar;
         ImageView imageView;
         ImageView playButtonImageView;
         FrameLayout noPreviewPostImageFrameLayout;
         ImageView noPreviewPostImageView;
-        Barrier imageBarrier;
-        ConstraintLayout bottomConstraintLayout;
+        @Nullable ConstraintLayout bottomConstraintLayout;
         View divider;
         RequestListener<Drawable> requestListener;
 
@@ -3629,30 +3697,28 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                          TextView nameTextView,
                          ImageView stickiedPostImageView,
                          TextView postTimeTextView,
-                         ConstraintLayout titleAndImageConstraintLayout,
                          TextView titleTextView,
-                         CustomTextView typeTextView,
-                         ImageView archivedImageView,
-                         ImageView lockedImageView,
-                         ImageView crosspostImageView,
-                         CustomTextView nsfwTextView,
-                         CustomTextView spoilerTextView,
-                         CustomTextView flairTextView,
-                         TextView linkTextView,
+                         @Nullable CustomTextView typeTextView,
+                         @Nullable ImageView archivedImageView,
+                         @Nullable ImageView lockedImageView,
+                         @Nullable ImageView crosspostImageView,
+                         @Nullable CustomTextView nsfwTextView,
+                         @Nullable CustomTextView spoilerTextView,
+                         @Nullable CustomTextView flairTextView,
+                         @Nullable TextView linkTextView,
                          RelativeLayout relativeLayout,
                          ProgressBar progressBar,
                          ImageView imageView,
                          ImageView playButtonImageView,
                          FrameLayout noPreviewLinkImageFrameLayout,
                          ImageView noPreviewLinkImageView,
-                         Barrier imageBarrier,
-                         ConstraintLayout bottomConstraintLayout,
+                         @Nullable ConstraintLayout bottomConstraintLayout,
                          MaterialButton upvoteButton,
                          TextView scoreTextView,
                          MaterialButton downvoteButton,
-                         MaterialButton commentsCountButton,
-                         MaterialButton saveButton,
-                         MaterialButton shareButton,
+                         @Nullable MaterialButton commentsCountButton,
+                         @Nullable MaterialButton saveButton,
+                         @Nullable MaterialButton shareButton,
                          View divider) {
             super.setBaseView(iconGifImageView,
                     nameTextView,
@@ -3674,7 +3740,6 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                     shareButton);
 
             this.nameTextView = nameTextView;
-            this.titleAndImageConstraintLayout = titleAndImageConstraintLayout;
             this.linkTextView = linkTextView;
             this.relativeLayout = relativeLayout;
             this.progressBar = progressBar;
@@ -3682,27 +3747,28 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
             this.playButtonImageView = playButtonImageView;
             this.noPreviewPostImageFrameLayout = noPreviewLinkImageFrameLayout;
             this.noPreviewPostImageView = noPreviewLinkImageView;
-            this.imageBarrier = imageBarrier;
             this.bottomConstraintLayout = bottomConstraintLayout;
             this.divider = divider;
 
             if (mVoteButtonsOnTheRight) {
-                ConstraintSet constraintSet = new ConstraintSet();
-                constraintSet.clone(bottomConstraintLayout);
-                constraintSet.clear(upvoteButton.getId(), ConstraintSet.START);
-                constraintSet.clear(scoreTextView.getId(), ConstraintSet.START);
-                constraintSet.clear(downvoteButton.getId(), ConstraintSet.START);
-                constraintSet.clear(saveButton.getId(), ConstraintSet.END);
-                constraintSet.clear(shareButton.getId(), ConstraintSet.END);
-                constraintSet.connect(upvoteButton.getId(), ConstraintSet.END, scoreTextView.getId(), ConstraintSet.START);
-                constraintSet.connect(scoreTextView.getId(), ConstraintSet.END, downvoteButton.getId(), ConstraintSet.START);
-                constraintSet.connect(downvoteButton.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
-                constraintSet.connect(commentsCountButton.getId(), ConstraintSet.START, saveButton.getId(), ConstraintSet.END);
-                constraintSet.connect(commentsCountButton.getId(), ConstraintSet.END, upvoteButton.getId(), ConstraintSet.START);
-                constraintSet.connect(saveButton.getId(), ConstraintSet.START, shareButton.getId(), ConstraintSet.END);
-                constraintSet.connect(shareButton.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
-                constraintSet.setHorizontalBias(commentsCountButton.getId(), 0);
-                constraintSet.applyTo(bottomConstraintLayout);
+                if (bottomConstraintLayout != null) {
+                    ConstraintSet constraintSet = new ConstraintSet();
+                    constraintSet.clone(bottomConstraintLayout);
+                    constraintSet.clear(upvoteButton.getId(), ConstraintSet.START);
+                    constraintSet.clear(scoreTextView.getId(), ConstraintSet.START);
+                    constraintSet.clear(downvoteButton.getId(), ConstraintSet.START);
+                    constraintSet.clear(saveButton.getId(), ConstraintSet.END);
+                    constraintSet.clear(shareButton.getId(), ConstraintSet.END);
+                    constraintSet.connect(upvoteButton.getId(), ConstraintSet.END, scoreTextView.getId(), ConstraintSet.START);
+                    constraintSet.connect(scoreTextView.getId(), ConstraintSet.END, downvoteButton.getId(), ConstraintSet.START);
+                    constraintSet.connect(downvoteButton.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+                    constraintSet.connect(commentsCountButton.getId(), ConstraintSet.START, saveButton.getId(), ConstraintSet.END);
+                    constraintSet.connect(commentsCountButton.getId(), ConstraintSet.END, upvoteButton.getId(), ConstraintSet.START);
+                    constraintSet.connect(saveButton.getId(), ConstraintSet.START, shareButton.getId(), ConstraintSet.END);
+                    constraintSet.connect(shareButton.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+                    constraintSet.setHorizontalBias(commentsCountButton.getId(), 0);
+                    constraintSet.applyTo(bottomConstraintLayout);
+                }
             }
 
             if (((ViewGroup) itemView).getLayoutTransition() != null) {
@@ -3712,13 +3778,25 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
             if (mActivity.typeface != null) {
                 nameTextView.setTypeface(mActivity.typeface);
                 postTimeTextView.setTypeface(mActivity.typeface);
-                typeTextView.setTypeface(mActivity.typeface);
-                spoilerTextView.setTypeface(mActivity.typeface);
-                nsfwTextView.setTypeface(mActivity.typeface);
-                flairTextView.setTypeface(mActivity.typeface);
-                linkTextView.setTypeface(mActivity.typeface);
+                if (typeTextView != null) {
+                    typeTextView.setTypeface(mActivity.typeface);
+                }
+                if (spoilerTextView != null) {
+                    spoilerTextView.setTypeface(mActivity.typeface);
+                }
+                if (nsfwTextView != null) {
+                    nsfwTextView.setTypeface(mActivity.typeface);
+                }
+                if (flairTextView != null) {
+                    flairTextView.setTypeface(mActivity.typeface);
+                }
+                if (linkTextView != null) {
+                    linkTextView.setTypeface(mActivity.typeface);
+                }
                 upvoteButton.setTypeface(mActivity.typeface);
-                commentsCountButton.setTypeface(mActivity.typeface);
+                if (commentsCountButton != null) {
+                    commentsCountButton.setTypeface(mActivity.typeface);
+                }
             }
             if (mActivity.titleTypeface != null) {
                 titleTextView.setTypeface(mActivity.titleTypeface);
@@ -3728,22 +3806,38 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
             postTimeTextView.setTextColor(mSecondaryTextColor);
             titleTextView.setTextColor(mPostTitleColor);
             stickiedPostImageView.setColorFilter(mStickiedPostIconTint, PorterDuff.Mode.SRC_IN);
-            typeTextView.setBackgroundColor(mPostTypeBackgroundColor);
-            typeTextView.setBorderColor(mPostTypeBackgroundColor);
-            typeTextView.setTextColor(mPostTypeTextColor);
-            spoilerTextView.setBackgroundColor(mSpoilerBackgroundColor);
-            spoilerTextView.setBorderColor(mSpoilerBackgroundColor);
-            spoilerTextView.setTextColor(mSpoilerTextColor);
-            nsfwTextView.setBackgroundColor(mNSFWBackgroundColor);
-            nsfwTextView.setBorderColor(mNSFWBackgroundColor);
-            nsfwTextView.setTextColor(mNSFWTextColor);
-            flairTextView.setBackgroundColor(mFlairBackgroundColor);
-            flairTextView.setBorderColor(mFlairBackgroundColor);
-            flairTextView.setTextColor(mFlairTextColor);
-            archivedImageView.setColorFilter(mArchivedIconTint, PorterDuff.Mode.SRC_IN);
-            lockedImageView.setColorFilter(mLockedIconTint, PorterDuff.Mode.SRC_IN);
-            crosspostImageView.setColorFilter(mCrosspostIconTint, PorterDuff.Mode.SRC_IN);
-            linkTextView.setTextColor(mSecondaryTextColor);
+            if (typeTextView != null) {
+                typeTextView.setBackgroundColor(mPostTypeBackgroundColor);
+                typeTextView.setBorderColor(mPostTypeBackgroundColor);
+                typeTextView.setTextColor(mPostTypeTextColor);
+            }
+            if (spoilerTextView != null) {
+                spoilerTextView.setBackgroundColor(mSpoilerBackgroundColor);
+                spoilerTextView.setBorderColor(mSpoilerBackgroundColor);
+                spoilerTextView.setTextColor(mSpoilerTextColor);
+            }
+            if (nsfwTextView != null) {
+                nsfwTextView.setBackgroundColor(mNSFWBackgroundColor);
+                nsfwTextView.setBorderColor(mNSFWBackgroundColor);
+                nsfwTextView.setTextColor(mNSFWTextColor);
+            }
+            if (flairTextView != null) {
+                flairTextView.setBackgroundColor(mFlairBackgroundColor);
+                flairTextView.setBorderColor(mFlairBackgroundColor);
+                flairTextView.setTextColor(mFlairTextColor);
+            }
+            if (archivedImageView != null) {
+                archivedImageView.setColorFilter(mArchivedIconTint, PorterDuff.Mode.SRC_IN);
+            }
+            if (lockedImageView != null) {
+                lockedImageView.setColorFilter(mLockedIconTint, PorterDuff.Mode.SRC_IN);
+            }
+            if (crosspostImageView != null) {
+                crosspostImageView.setColorFilter(mCrosspostIconTint, PorterDuff.Mode.SRC_IN);
+            }
+            if (linkTextView != null) {
+                linkTextView.setTextColor(mSecondaryTextColor);
+            }
             playButtonImageView.setColorFilter(mMediaIndicatorIconTint, PorterDuff.Mode.SRC_IN);
             playButtonImageView.setBackgroundTintList(ColorStateList.valueOf(mMediaIndicatorBackgroundColor));
             progressBar.setIndeterminateTintList(ColorStateList.valueOf(mColorAccent));
@@ -3752,17 +3846,23 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
             upvoteButton.setIconTint(ColorStateList.valueOf(mPostIconAndInfoColor));
             scoreTextView.setTextColor(mPostIconAndInfoColor);
             downvoteButton.setIconTint(ColorStateList.valueOf(mPostIconAndInfoColor));
-            commentsCountButton.setTextColor(mPostIconAndInfoColor);
-            commentsCountButton.setIconTint(ColorStateList.valueOf(mPostIconAndInfoColor));
-            saveButton.setIconTint(ColorStateList.valueOf(mPostIconAndInfoColor));
-            shareButton.setIconTint(ColorStateList.valueOf(mPostIconAndInfoColor));
+            if (commentsCountButton != null) {
+                commentsCountButton.setTextColor(mPostIconAndInfoColor);
+                commentsCountButton.setIconTint(ColorStateList.valueOf(mPostIconAndInfoColor));
+            }
+            if (saveButton != null) {
+                saveButton.setIconTint(ColorStateList.valueOf(mPostIconAndInfoColor));
+            }
+            if (shareButton != null) {
+                shareButton.setIconTint(ColorStateList.valueOf(mPostIconAndInfoColor));
+            }
             divider.setBackgroundColor(mDividerColor);
 
             imageView.setClipToOutline(true);
             noPreviewLinkImageFrameLayout.setClipToOutline(true);
 
             itemView.setOnLongClickListener(view -> {
-                if (mLongPressToHideToolbarInCompactLayout) {
+                if (bottomConstraintLayout != null && mLongPressToHideToolbarInCompactLayout) {
                     if (bottomConstraintLayout.getLayoutParams().height == 0) {
                         ViewGroup.LayoutParams params = bottomConstraintLayout.getLayoutParams();
                         params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -3781,7 +3881,7 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                     }
 
                     PostOptionsBottomSheetFragment postOptionsBottomSheetFragment;
-                    postOptionsBottomSheetFragment = PostOptionsBottomSheetFragment.newInstance(post);
+                    postOptionsBottomSheetFragment = PostOptionsBottomSheetFragment.newInstance(post, getBindingAdapterPosition());
                     postOptionsBottomSheetFragment.show(mActivity.getSupportFragmentManager(), postOptionsBottomSheetFragment.getTag());
                 }
                 return true;
@@ -3805,13 +3905,13 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
 
             requestListener = new RequestListener<>() {
                 @Override
-                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, @NonNull Target<Drawable> target, boolean isFirstResource) {
                     progressBar.setVisibility(View.GONE);
                     return false;
                 }
 
                 @Override
-                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                public boolean onResourceReady(@NonNull Drawable resource, @NonNull Object model, Target<Drawable> target, @NonNull DataSource dataSource, boolean isFirstResource) {
                     progressBar.setVisibility(View.GONE);
                     return false;
                 }
@@ -3851,7 +3951,6 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                     binding.nameTextViewItemPostCompact,
                     binding.stickiedPostImageViewItemPostCompact,
                     binding.postTimeTextViewItemPostCompact,
-                    binding.titleAndImageConstraintLayout,
                     binding.titleTextViewItemPostCompact,
                     binding.typeTextViewItemPostCompact,
                     binding.archivedImageViewItemPostCompact,
@@ -3867,7 +3966,6 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                     binding.playButtonImageViewItemPostCompact,
                     binding.frameLayoutImageViewNoPreviewLinkItemPostCompact,
                     binding.imageViewNoPreviewLinkItemPostCompact,
-                    binding.barrier2,
                     binding.bottomConstraintLayoutItemPostCompact,
                     binding.upvoteButtonItemPostCompact,
                     binding.scoreTextViewItemPostCompact,
@@ -3887,7 +3985,6 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                     binding.nameTextViewItemPostCompactRightThumbnail,
                     binding.stickiedPostImageViewItemPostCompactRightThumbnail,
                     binding.postTimeTextViewItemPostCompactRightThumbnail,
-                    binding.titleAndImageConstraintLayout,
                     binding.titleTextViewItemPostCompactRightThumbnail,
                     binding.typeTextViewItemPostCompactRightThumbnail,
                     binding.archivedImageViewItemPostCompactRightThumbnail,
@@ -3903,7 +4000,6 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                     binding.playButtonImageViewItemPostCompactRightThumbnail,
                     binding.frameLayoutImageViewNoPreviewLinkItemPostCompactRightThumbnail,
                     binding.imageViewNoPreviewLinkItemPostCompactRightThumbnail,
-                    binding.barrier2,
                     binding.bottomConstraintLayoutItemPostCompactRightThumbnail,
                     binding.upvoteButtonItemPostCompactRightThumbnail,
                     binding.scoreTextViewItemPostCompactRightThumbnail,
@@ -3912,6 +4008,74 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                     binding.saveButtonItemPostCompactRightThumbnail,
                     binding.shareButtonItemPostCompactRightThumbnail,
                     binding.dividerItemPostCompactRightThumbnail);
+        }
+    }
+
+    class PostCompact2LeftThumbnailViewHolder extends PostCompactBaseViewHolder {
+        PostCompact2LeftThumbnailViewHolder(@NonNull ItemPostCompact2Binding binding) {
+            super(binding.getRoot());
+
+            setBaseView(binding.iconGifImageViewItemPostCompact2,
+                    binding.nameTextViewItemPostCompact2,
+                    binding.stickiedPostImageViewItemPostCompact2,
+                    binding.postTimeTextViewItemPostCompact2,
+                    binding.titleTextViewItemPostCompact2,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    binding.imageViewWrapperItemPostCompact2,
+                    binding.progressBarItemPostCompact2,
+                    binding.imageViewItemPostCompact2,
+                    binding.playButtonImageViewItemPostCompact2,
+                    binding.frameLayoutImageViewNoPreviewLinkItemPostCompact2,
+                    binding.imageViewNoPreviewLinkItemPostCompact2,
+                    null,
+                    binding.upvoteButtonItemPostCompact2,
+                    binding.scoreTextViewItemPostCompact2,
+                    binding.downvoteButtonItemPostCompact2,
+                    null,
+                    null,
+                    null,
+                    binding.dividerItemPostCompact2);
+        }
+    }
+
+    class PostCompact2RightThumbnailViewHolder extends PostCompactBaseViewHolder {
+        PostCompact2RightThumbnailViewHolder(@NonNull ItemPostCompact2RightThumbnailBinding binding) {
+            super(binding.getRoot());
+
+            setBaseView(binding.iconGifImageViewItemPostCompact2RightThumbnail,
+                    binding.nameTextViewItemPostCompact2RightThumbnail,
+                    binding.stickiedPostImageViewItemPostCompact2RightThumbnail,
+                    binding.postTimeTextViewItemPostCompact2RightThumbnail,
+                    binding.titleTextViewItemPostCompact2RightThumbnail,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    binding.imageViewWrapperItemPostCompact2RightThumbnail,
+                    binding.progressBarItemPostCompact2RightThumbnail,
+                    binding.imageViewItemPostCompact2RightThumbnail,
+                    binding.playButtonImageViewItemPostCompact2RightThumbnail,
+                    binding.frameLayoutImageViewNoPreviewLinkItemPostCompact2RightThumbnail,
+                    binding.imageViewNoPreviewLinkItemPostCompact2RightThumbnail,
+                    null,
+                    binding.upvoteButtonItemPostCompact2RightThumbnail,
+                    binding.scoreTextViewItemPostCompact2RightThumbnail,
+                    binding.downvoteButtonItemPostCompact2RightThumbnail,
+                    null,
+                    null,
+                    null,
+                    binding.dividerItemPostCompact2RightThumbnail);
         }
     }
 
