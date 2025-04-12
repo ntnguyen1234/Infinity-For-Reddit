@@ -1069,7 +1069,7 @@ public class MainActivity extends BaseActivity implements SortTypeSelectionCallb
         }
 
         if (!accountName.equals(Account.ANONYMOUS_ACCOUNT) && !mFetchSubscriptionsSuccess) {
-            FetchSubscribedThing.fetchSubscribedThing(mOauthRetrofit, accessToken, accountName, null,
+            FetchSubscribedThing.fetchSubscribedThing(mExecutor, mHandler, mOauthRetrofit, accessToken, accountName, null,
                     new ArrayList<>(), new ArrayList<>(),
                     new ArrayList<>(),
                     new FetchSubscribedThing.FetchSubscribedThingListener() {
@@ -1099,15 +1099,16 @@ public class MainActivity extends BaseActivity implements SortTypeSelectionCallb
 
     private void loadUserData() {
         if (!mFetchUserInfoSuccess) {
-            FetchUserData.fetchUserData(mRedditDataRoomDatabase, mOauthRetrofit, accessToken,
+            FetchUserData.fetchUserData(mExecutor, mHandler, mRedditDataRoomDatabase, mOauthRetrofit, accessToken,
                     accountName, new FetchUserData.FetchUserDataListener() {
                         @ExperimentalBadgeUtils
                         @Override
                         public void onFetchUserDataSuccess(UserData userData, int inboxCount) {
                             MainActivity.this.inboxCount = inboxCount;
+                            mCurrentAccountSharedPreferences.edit().putInt(SharedPreferencesUtils.INBOX_COUNT, inboxCount).apply();
                             accountName = userData.getName();
                             mFetchUserInfoSuccess = true;
-                            setInboxCount();
+                            EventBus.getDefault().post(new ChangeInboxCountEvent(inboxCount));
                         }
 
                         @Override
@@ -1354,6 +1355,7 @@ public class MainActivity extends BaseActivity implements SortTypeSelectionCallb
     @ExperimentalBadgeUtils
     @Subscribe
     public void onChangeInboxCountEvent(ChangeInboxCountEvent event) {
+        this.inboxCount = event.inboxCount;
         setInboxCount();
     }
 
