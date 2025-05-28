@@ -655,6 +655,9 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
 
             mMenu.findItem(R.id.action_comment_view_post_detail_fragment).setVisible(true);
             mMenu.findItem(R.id.action_sort_view_post_detail_fragment).setVisible(true);
+            mMenu.findItem(R.id.action_report_view_post_detail_fragment).setVisible(true);
+            mMenu.findItem(R.id.action_crosspost_view_post_detail_fragment).setVisible(true);
+            mMenu.findItem(R.id.action_add_to_post_filter_view_post_detail_fragment).setVisible(true);
 
             if (!activity.accountName.equals(Account.ANONYMOUS_ACCOUNT)) {
                 if (mPost.isSaved()) {
@@ -1200,16 +1203,9 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
     @Override
     public void onDestroyView() {
         Bridge.clear(this);
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
         EventBus.getDefault().unregister(this);
-        if (binding.postDetailRecyclerViewViewPostDetailFragment != null) {
-            binding.postDetailRecyclerViewViewPostDetailFragment.addOnWindowFocusChangedListener(null);
-        }
-        super.onDestroy();
+        binding.postDetailRecyclerViewViewPostDetailFragment.addOnWindowFocusChangedListener(null);
+        super.onDestroyView();
     }
 
     @SuppressLint("RestrictedApi")

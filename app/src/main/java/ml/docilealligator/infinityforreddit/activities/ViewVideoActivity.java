@@ -63,9 +63,9 @@ import androidx.media3.common.VideoSize;
 import androidx.media3.common.util.UnstableApi;
 import androidx.media3.common.util.Util;
 import androidx.media3.datasource.DataSource;
-import androidx.media3.datasource.DefaultHttpDataSource;
 import androidx.media3.datasource.cache.CacheDataSource;
 import androidx.media3.datasource.cache.SimpleCache;
+import androidx.media3.datasource.okhttp.OkHttpDataSource;
 import androidx.media3.exoplayer.DefaultRenderersFactory;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.exoplayer.hls.HlsMediaSource;
@@ -112,6 +112,7 @@ import ml.docilealligator.infinityforreddit.thing.StreamableVideo;
 import ml.docilealligator.infinityforreddit.utils.APIUtils;
 import ml.docilealligator.infinityforreddit.utils.SharedPreferencesUtils;
 import ml.docilealligator.infinityforreddit.utils.Utils;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
 public class ViewVideoActivity extends AppCompatActivity implements CustomFontReceiver {
@@ -178,6 +179,10 @@ public class ViewVideoActivity extends AppCompatActivity implements CustomFontRe
     private int playbackSpeed = 100;
     private boolean useBottomAppBar;
     private ViewVideoActivityBindingAdapter binding;
+
+    @Inject
+    @Named("media3")
+    OkHttpClient mOkHttpClient;
 
     @Inject
     @Named("no_oauth")
@@ -509,7 +514,7 @@ public class ViewVideoActivity extends AppCompatActivity implements CustomFontRe
             subredditName = savedInstanceState.getString(SUBREDDIT_NAME_STATE);
             id = savedInstanceState.getString(ID_STATE);
             setNonDataSavingModeDefaultResolutionAlready = savedInstanceState.getBoolean(SET_NON_DATA_SAVING_MODE_DEFAULT_RESOLUTION_ALREADY_STATE);
-            setPlaybackSpeed(savedInstanceState.getInt(PLAYBACK_SPEED_STATE));
+            setPlaybackSpeed(savedInstanceState.getInt(PLAYBACK_SPEED_STATE, 100));
         }
 
         MaterialButton playPauseButton = findViewById(R.id.exo_play_pause_button_exo_playback_control_view);
@@ -654,7 +659,7 @@ public class ViewVideoActivity extends AppCompatActivity implements CustomFontRe
 
         // Produces DataSource instances through which media data is loaded.
         dataSourceFactory = new CacheDataSource.Factory().setCache(mSimpleCache)
-                .setUpstreamDataSourceFactory(new DefaultHttpDataSource.Factory().setAllowCrossProtocolRedirects(true).setUserAgent(APIUtils.USER_AGENT));
+                .setUpstreamDataSourceFactory(new OkHttpDataSource.Factory(mOkHttpClient).setUserAgent(APIUtils.USER_AGENT));
         String redgifsId = null;
         if (videoType == VIDEO_TYPE_STREAMABLE) {
             if (savedInstanceState != null) {
@@ -928,8 +933,8 @@ public class ViewVideoActivity extends AppCompatActivity implements CustomFontRe
     }
 
     public void setPlaybackSpeed(int speed100X) {
-        this.playbackSpeed = speed100X;
-        player.setPlaybackParameters(new PlaybackParameters((float) (speed100X / 100.0)));
+        this.playbackSpeed = speed100X <= 0 ? 100 : speed100X;
+        player.setPlaybackParameters(new PlaybackParameters((speed100X / 100.0f)));
     }
 
     private void requestPermissionAndDownload() {
